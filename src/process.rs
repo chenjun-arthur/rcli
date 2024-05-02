@@ -1,7 +1,6 @@
 use anyhow::Result;
 use csv::Reader;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 use std::fs;
 
 use crate::opts::OutputFormat;
@@ -28,14 +27,17 @@ pub fn process_csv(input: &str, output: String, format: OutputFormat) -> Result<
         // record.iter() -> 使用 record 的迭代器
         // zip -> 将两个迭代器合并成一个元组的迭代器 [(header1, record1), (header2, record2), ...]
         // collect::<Value>() -> 将元组的迭代器转换为 Json Value; 此处为函数式编程的写法
-        let json_value = headers.iter().zip(record.iter()).collect::<Value>();
+        let json_value = headers
+            .iter()
+            .zip(record.iter())
+            .collect::<serde_json::Value>();
+
         ret.push(json_value);
     }
 
     let content = match format {
         OutputFormat::Json => serde_json::to_string_pretty(&ret)?,
         OutputFormat::Yaml => serde_yaml::to_string(&ret)?,
-        OutputFormat::Toml => toml::to_string(&ret)?,
     };
     fs::write(output, content)?;
     Ok(())
