@@ -32,3 +32,19 @@ cargo run -- base64 decode --format urlsafe
 cargo run -- base64 encode --format urlsafe -i Cargo.toml > tmp.64
 cargo run -- base64 decode --format urlsafe -i tmp.64
 ```
+
+- 版本发布
+```bash
+git tag -a v1-9-base64
+```
+
+- IDE Setting 使得VS code在保存文件的时候，能够对于依赖自动进行排序，而且在一行过长的时候，能够自动进行换行
+    - 在settings.json中增加如下字段
+```json
+    "[rust]": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer",
+        "editor.formatOnSave": true,
+    },
+```
+
+    - 看起来对于单独的workspace或者工程环境，可以配置settings.json，从Setting选项页面的右上角图标就可以进入文本化的配置文件；
